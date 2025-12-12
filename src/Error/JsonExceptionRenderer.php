@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace App\Error;
 
 use Cake\Core\Configure;
-use Cake\Error\ExceptionRenderer;
+use Cake\Error\Renderer\WebExceptionRenderer;
 use Cake\Http\Response;
 
 /**
  * Custom Exception Renderer that returns JSON responses
  */
-class JsonExceptionRenderer extends ExceptionRenderer
+class JsonExceptionRenderer extends WebExceptionRenderer
 {
     /**
      * Render the exception as JSON
