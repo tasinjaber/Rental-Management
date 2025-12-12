@@ -87,7 +87,23 @@ if (!IS_SERVERLESS) {
 // Set up database connections
 $datasources = Configure::consume('Datasources');
 if ($datasources) {
-    ConnectionManager::setConfig($datasources);
+    try {
+        ConnectionManager::setConfig($datasources);
+        // Test connection
+        if (!IS_SERVERLESS) {
+            $connection = ConnectionManager::get('default');
+            $connection->connect();
+        }
+    } catch (\Exception $e) {
+        // Log database connection error but don't fail bootstrap
+        error_log('Database connection error: ' . $e->getMessage());
+        if (IS_SERVERLESS) {
+            // In serverless, we'll let it fail when actually used
+            // This allows the app to bootstrap even if DB is temporarily unavailable
+        } else {
+            throw $e;
+        }
+    }
 }
 
 // Set up logging
