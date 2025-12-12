@@ -14,7 +14,9 @@
     }
   ],
   "env": {
-    "APP_ENV": "production"
+    "APP_ENV": "production",
+    "COMPOSER_NO_DEV": "1",
+    "COMPOSER_INSTALL_OPTIONS": "--no-dev --classmap-authoritative --no-progress --optimize-autoloader"
   }
 }
 
