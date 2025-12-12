@@ -1,5 +1,5 @@
-# Composer vendor directory (needed - will be optimized during build)
-# vendor/
+# Composer vendor directory - exclude from upload, Vercel will install fresh
+vendor/
 
 # Logs and temporary files
 logs/

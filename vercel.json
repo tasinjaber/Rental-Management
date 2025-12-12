@@ -4,7 +4,7 @@
   "functions": {
     "api/*.php": {
       "runtime": "vercel-php@0.7.4",
-      "excludeFiles": "{.git,logs,tmp,node_modules,firebase,frontend,tests,bin,*.md,*.pdf,webroot/uploads,vendor/cakephp/{debug_kit,phpunit,codesniffer,bake},vendor/**/{tests,test,*.md,.git}}/**"
+      "excludeFiles": "{.git,logs,tmp,node_modules,firebase,frontend,tests,bin,*.md,*.pdf,webroot/uploads,vendor/cakephp/{debug_kit,phpunit,codesniffer,bake},vendor/google,vendor/tecnickcom/tcpdf/{fonts,examples,tools},vendor/**/{tests,test,*.md,.git,docs,doc}}/**"
     }
   },
   "routes": [
