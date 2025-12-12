@@ -33,7 +33,8 @@ define('RESOURCES', ROOT . DS . 'resources' . DS);
 define('TMP', ROOT . DS . 'tmp' . DS);
 
 // Detect serverless environment
-define('IS_SERVERLESS', getenv('VERCEL') || getenv('AWS_LAMBDA_FUNCTION_NAME') || (file_exists(LOGS) && !is_writable(LOGS)));
+$logsDir = ROOT . DS . 'logs' . DS;
+define('IS_SERVERLESS', getenv('VERCEL') || getenv('AWS_LAMBDA_FUNCTION_NAME') || (file_exists($logsDir) && !is_writable($logsDir)) || !is_writable(dirname($logsDir)));
 
 require ROOT . '/config/paths.php';
 
@@ -50,9 +51,37 @@ if (file_exists(CONFIG . 'app_local.php')) {
 mb_internal_encoding(Configure::read('App.encoding') ?: 'UTF-8');
 
 // Set up cache
-$cacheConfig = Configure::consume('Cache');
-if ($cacheConfig) {
-    Cache::setConfig($cacheConfig);
+// Skip file cache in serverless environments (Vercel has read-only filesystem)
+if (!IS_SERVERLESS) {
+    $cacheConfig = Configure::consume('Cache');
+    if ($cacheConfig) {
+        Cache::setConfig($cacheConfig);
+    }
+} else {
+    // For serverless, use ArrayEngine (memory-based, no filesystem writes)
+    // File cache won't work in read-only filesystem
+    try {
+        Cache::setConfig([
+            'default' => [
+                'className' => 'Cake\Cache\Engine\ArrayEngine',
+            ],
+            '_cake_core_' => [
+                'className' => 'Cake\Cache\Engine\ArrayEngine',
+                'prefix' => 'myapp_cake_core_',
+                'serialize' => true,
+                'duration' => '+2 minutes',
+            ],
+            '_cake_model_' => [
+                'className' => 'Cake\Cache\Engine\ArrayEngine',
+                'prefix' => 'myapp_cake_model_',
+                'serialize' => true,
+                'duration' => '+2 minutes',
+            ],
+        ]);
+    } catch (\Exception $e) {
+        // If cache setup fails, continue without cache
+        error_log('Cache setup failed: ' . $e->getMessage());
+    }
 }
 
 // Set up database connections

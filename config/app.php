@@ -3,7 +3,7 @@
  * CakePHP Configuration File
  */
 return [
-    'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+    'debug' => filter_var(env('DEBUG', getenv('APP_ENV') !== 'production' ? true : false), FILTER_VALIDATE_BOOLEAN),
     'App' => [
         'namespace' => 'App',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
