@@ -37,7 +37,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         $errorConfig = Configure::read('Error');
         if ($errorConfig) {
-            $errorConfig['exceptionRenderer'] = \Cake\Error\ExceptionRenderer::class;
+            $errorConfig['exceptionRenderer'] = \App\Error\JsonExceptionRenderer::class;
             $errorConfig['skipLog'] = ['404'];
         }
         

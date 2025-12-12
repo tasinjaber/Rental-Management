@@ -51,7 +51,7 @@ return [
         'skipLog' => [],
         'log' => false, // Disable file logging in serverless
         'trace' => true,
-        'exceptionRenderer' => \Cake\Error\ExceptionRenderer::class,
+        'exceptionRenderer' => \App\Error\JsonExceptionRenderer::class,
         'ignoredDeprecationPaths' => [
             'config/routes.php',
         ],
