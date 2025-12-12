@@ -140,9 +140,9 @@ class UsersController extends AppController
             if ($result->isValid()) {
                 $user = $this->Authentication->getIdentity();
 
-                // After successful login, always redirect to the main dashboard.
-                // Use a fixed absolute URL to avoid any base path manipulation issues.
-                return $this->redirect('http://localhost/rental-management/dashboard');
+                // After successful login, redirect to dashboard
+                // Use relative URL that works in both localhost and Vercel
+                return $this->redirect(['controller' => 'Dashboard', 'action' => 'index']);
             }
             
             $this->Flash->error('Invalid email or password');
@@ -152,8 +152,9 @@ class UsersController extends AppController
     public function logout()
     {
         $this->Authentication->logout();
-        // After logout, always go to the login page.
-        return $this->redirect('http://localhost/rental-management/login');
+        // After logout, redirect to login page
+        // Use relative URL that works in both localhost and Vercel
+        return $this->redirect(['action' => 'login']);
     }
 
     public function register()
