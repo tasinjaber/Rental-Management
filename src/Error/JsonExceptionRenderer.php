@@ -18,7 +18,33 @@ class JsonExceptionRenderer extends WebExceptionRenderer
     public function render(): Response
     {
         try {
-            $exception = $this->getError();
+            // Get exception from parent class property (WebExceptionRenderer stores it)
+            $reflection = new \ReflectionClass($this);
+            $exception = null;
+            
+            // Try to get exception from various possible property names
+            if ($reflection->hasProperty('exception')) {
+                $prop = $reflection->getProperty('exception');
+                $prop->setAccessible(true);
+                $exception = $prop->getValue($this);
+            } elseif ($reflection->hasProperty('error')) {
+                $prop = $reflection->getProperty('error');
+                $prop->setAccessible(true);
+                $exception = $prop->getValue($this);
+            } else {
+                // Try parent class
+                $parent = $reflection->getParentClass();
+                if ($parent && $parent->hasProperty('exception')) {
+                    $prop = $parent->getProperty('exception');
+                    $prop->setAccessible(true);
+                    $exception = $prop->getValue($this);
+                }
+            }
+            
+            if (!$exception instanceof \Throwable) {
+                throw new \RuntimeException('Could not retrieve exception from renderer');
+            }
+            
             $code = 500;
             $message = $exception->getMessage() ?: 'An error occurred';
             
@@ -66,6 +92,7 @@ class JsonExceptionRenderer extends WebExceptionRenderer
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
+                'trace' => explode("\n", $e->getTraceAsString()),
             ], JSON_PRETTY_PRINT);
             exit;
         }
