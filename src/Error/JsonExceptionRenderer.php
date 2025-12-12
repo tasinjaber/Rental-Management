@@ -15,15 +15,24 @@ class JsonExceptionRenderer extends WebExceptionRenderer
     /**
      * Render the exception as JSON
      */
-    protected function _outputMessage(string $template): Response
+    public function render(): Response
     {
-        $code = $this->code ?: 500;
-        $message = $this->message ?: 'An error occurred';
-        $error = $this->error ?: 'error';
-        $exception = $this->exception;
+        $exception = $this->getError();
+        $code = 500;
+        $message = $exception->getMessage() ?: 'An error occurred';
+        
+        // Get HTTP status code from exception
+        if ($exception instanceof \Cake\Http\Exception\HttpException) {
+            $code = $exception->getCode();
+        } elseif (method_exists($exception, 'getCode')) {
+            $exceptionCode = $exception->getCode();
+            if ($exceptionCode >= 100 && $exceptionCode < 600) {
+                $code = $exceptionCode;
+            }
+        }
 
         $response = [
-            'error' => $error,
+            'error' => get_class($exception),
             'code' => $code,
             'message' => $message,
         ];
@@ -43,14 +52,12 @@ class JsonExceptionRenderer extends WebExceptionRenderer
             }
         }
 
-        // Set response headers and body
-        $responseObj = $this->controller->getResponse()
-            ->withType('application/json')
-            ->withStatus($code)
-            ->withStringBody(json_encode($response, JSON_PRETTY_PRINT));
-        
-        $this->controller->setResponse($responseObj);
-        return $this->_outputMessageSafe($template);
+        // Create and return JSON response directly
+        return new Response([
+            'status' => $code,
+            'type' => 'application/json',
+            'body' => json_encode($response, JSON_PRETTY_PRINT),
+        ]);
     }
 }
 
