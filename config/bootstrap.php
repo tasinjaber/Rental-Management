@@ -142,4 +142,11 @@ if (Configure::read('debug') && file_exists(ROOT . '/vendor/cakephp/cakephp-code
 // Initialize Router before creating Application
 \Cake\Routing\Router::resetRoutes();
 
-return new \App\Application(CONFIG);
+try {
+    return new \App\Application(CONFIG);
+} catch (\Throwable $e) {
+    // If Application creation fails, throw with context
+    error_log('Application creation failed: ' . $e->getMessage());
+    error_log('File: ' . $e->getFile() . ':' . $e->getLine());
+    throw $e;
+}

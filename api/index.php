@@ -5,9 +5,29 @@
  */
 use Cake\Http\Server;
 
-// Set error reporting for development
+// Set error reporting - show all errors for debugging
 error_reporting(E_ALL);
-ini_set('display_errors', '0'); // Don't display, but log
+ini_set('display_errors', '1');
+ini_set('log_errors', '1');
+
+// Set error handler to catch all errors
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
+// Set exception handler
+set_exception_handler(function($e) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'error' => 'Uncaught Exception',
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => explode("\n", $e->getTraceAsString()),
+    ], JSON_PRETTY_PRINT);
+    exit;
+});
 
 try {
     require dirname(__DIR__) . '/vendor/autoload.php';
@@ -28,14 +48,13 @@ try {
     http_response_code(500);
     header('Content-Type: application/json');
     
-    // Show error details for debugging (remove in production)
-    $isProduction = getenv('APP_ENV') === 'production' || getenv('VERCEL_ENV') === 'production';
+    // Always show error details for debugging
     echo json_encode([
         'error' => 'Internal Server Error',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
-        'trace' => $isProduction ? null : explode("\n", $e->getTraceAsString()),
+        'trace' => explode("\n", $e->getTraceAsString()),
     ], JSON_PRETTY_PRINT);
     exit;
 }

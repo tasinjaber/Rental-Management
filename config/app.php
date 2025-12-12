@@ -49,7 +49,7 @@ return [
     'Error' => [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
         'skipLog' => [],
-        'log' => !(getenv('VERCEL') || getenv('AWS_LAMBDA_FUNCTION_NAME')),
+        'log' => false, // Disable file logging in serverless
         'trace' => true,
         'exceptionRenderer' => \Cake\Error\ExceptionRenderer::class,
         'ignoredDeprecationPaths' => [
