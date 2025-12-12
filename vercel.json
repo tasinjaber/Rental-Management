@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "webroot/index.php",
-      "use": "@vercel/php"
+  "functions": {
+    "api/*.php": {
+      "runtime": "vercel-php@0.7.4",
+      "excludeFiles": "{.git,logs,tmp,node_modules,firebase,frontend,tests,bin,*.md,*.pdf,composer.phar,composer-setup.php,webroot/uploads,vendor/cakephp/debug_kit,vendor/phpunit,vendor/cakephp/cakephp-codesniffer,vendor/cakephp/bake,vendor/**/tests,vendor/**/Tests,vendor/**/test,vendor/**/docs,vendor/**/doc,vendor/**/*.md,vendor/**/*.txt,vendor/**/.git}/**"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/webroot/index.php"
+      "dest": "/api/index.php"
     }
   ],
   "env": {
