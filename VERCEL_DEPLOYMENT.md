@@ -6,10 +6,12 @@ This project uses Vercel's PHP runtime (`vercel-php@0.7.4`) which automatically 
 
 ## Important: Build Command Configuration
 
-**DO NOT** set a custom build command in Vercel dashboard. The `vercel-php` runtime automatically:
+The `vercel.json` file now includes a no-op build command to prevent conflicts. The `vercel-php` runtime automatically:
 - Detects `composer.json`
 - Runs `composer install` automatically
 - Handles PHP dependencies
+
+**DO NOT** override the build command in Vercel dashboard. If you have a build command set there, remove it.
 
 ## If You're Seeing "php: command not found" Error
 
