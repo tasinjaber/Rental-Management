@@ -5,6 +5,7 @@ namespace App\Error;
 
 use Cake\Core\Configure;
 use Cake\Error\ExceptionRenderer;
+use Cake\Http\Response;
 
 /**
  * Custom Exception Renderer that returns JSON responses
@@ -14,7 +15,7 @@ class JsonExceptionRenderer extends ExceptionRenderer
     /**
      * Render the exception as JSON
      */
-    protected function _outputMessage($template)
+    protected function _outputMessage(string $template): Response
     {
         $code = $this->code ?: 500;
         $message = $this->message ?: 'An error occurred';
@@ -49,7 +50,7 @@ class JsonExceptionRenderer extends ExceptionRenderer
             ->withStringBody(json_encode($response, JSON_PRETTY_PRINT));
         
         $this->controller->setResponse($responseObj);
-        $this->_outputMessageSafe($template);
+        return $this->_outputMessageSafe($template);
     }
 }
 
