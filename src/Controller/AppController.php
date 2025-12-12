@@ -13,7 +13,9 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-        $this->loadComponent('Authentication.Authentication');
+        $this->loadComponent('Authentication.Authentication', [
+            'requireIdentity' => false, // Don't require authentication by default
+        ]);
         $this->loadComponent('Authorization.Authorization');
 
         if ($this->request->getParam('prefix') === 'Api') {
@@ -25,6 +27,7 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
         
+        // Allow unauthenticated access to public actions
         $this->Authentication->allowUnauthenticated(['login', 'register']);
     }
 }

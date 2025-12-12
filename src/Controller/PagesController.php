@@ -8,6 +8,14 @@ use Cake\Core\Configure;
 
 class PagesController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        
+        // Allow unauthenticated access to all pages (public pages)
+        $this->Authentication->allowUnauthenticated(['display']);
+    }
+    
     public function display(string ...$path): ?\Cake\Http\Response
     {
         if (!$path) {

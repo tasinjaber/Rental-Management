@@ -104,8 +104,11 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationService
     {
         // Authentication service without automatic unauthenticatedRedirect.
-        // Controllers (e.g. DashboardController) will handle redirects to login.
-        $service = new AuthenticationService();
+        // Controllers will handle authentication requirements.
+        $service = new AuthenticationService([
+            'unauthenticatedRedirect' => false, // Don't redirect, let controllers handle it
+            'queryParam' => 'redirect',
+        ]);
 
         $fields = [
             'username' => 'email',
