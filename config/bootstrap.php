@@ -32,6 +32,9 @@ define('CONFIG', ROOT . DS . 'config' . DS);
 define('RESOURCES', ROOT . DS . 'resources' . DS);
 define('TMP', ROOT . DS . 'tmp' . DS);
 
+// Detect serverless environment
+define('IS_SERVERLESS', getenv('VERCEL') || getenv('AWS_LAMBDA_FUNCTION_NAME') || (file_exists(LOGS) && !is_writable(LOGS)));
+
 require ROOT . '/config/paths.php';
 
 date_default_timezone_set('UTC');
@@ -59,9 +62,15 @@ if ($datasources) {
 }
 
 // Set up logging
-$logConfig = Configure::consume('Log');
-if ($logConfig) {
-    Log::setConfig($logConfig);
+// Skip file logging in serverless environments (Vercel has read-only filesystem)
+if (!IS_SERVERLESS) {
+    $logConfig = Configure::consume('Log');
+    if ($logConfig && !empty($logConfig)) {
+        Log::setConfig($logConfig);
+    }
+} else {
+    // For serverless, disable file logging - errors will be captured by Vercel's error handling
+    // Don't configure any log engines to avoid filesystem writes
 }
 
 // Set security salt

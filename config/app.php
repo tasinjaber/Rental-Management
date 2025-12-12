@@ -48,7 +48,7 @@ return [
     'Error' => [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
         'skipLog' => [],
-        'log' => true,
+        'log' => !(getenv('VERCEL') || getenv('AWS_LAMBDA_FUNCTION_NAME')),
         'trace' => true,
         'exceptionRenderer' => \Cake\Error\ExceptionRenderer::class,
         'ignoredDeprecationPaths' => [
@@ -99,24 +99,7 @@ return [
             'url' => env('CACHE_CAKEMODEL_URL', null),
         ],
     ],
-    'Log' => [
-        'debug' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'debug',
-            'url' => env('LOG_DEBUG_URL', null),
-            'scopes' => false,
-            'levels' => ['notice', 'info', 'debug'],
-        ],
-        'error' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'error',
-            'url' => env('LOG_ERROR_URL', null),
-            'scopes' => false,
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-        ],
-    ],
+    'Log' => [],
     'Session' => [
         'defaults' => 'php',
     ],
