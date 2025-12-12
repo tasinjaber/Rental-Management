@@ -16,7 +16,13 @@
   "env": {
     "APP_ENV": "production",
     "COMPOSER_NO_DEV": "1",
-    "COMPOSER_INSTALL_OPTIONS": "--no-dev --classmap-authoritative --no-progress --optimize-autoloader"
+    "COMPOSER_INSTALL_OPTIONS": "--no-dev --classmap-authoritative --no-progress --optimize-autoloader",
+    "DB_HOST": "sql7.freesqldatabase.com",
+    "DB_PORT": "3306",
+    "DB_USER": "sql7811650",
+    "DB_PASS": "KBH2dX2Akh",
+    "DB_NAME": "sql7811650",
+    "DEBUG": "false"
   }
 }
 

@@ -27,12 +27,16 @@ try {
     // Return a proper error response
     http_response_code(500);
     header('Content-Type: application/json');
+    
+    // Show error details for debugging (remove in production)
+    $isProduction = getenv('APP_ENV') === 'production' || getenv('VERCEL_ENV') === 'production';
     echo json_encode([
         'error' => 'Internal Server Error',
-        'message' => getenv('APP_ENV') === 'production' 
-            ? 'An error occurred' 
-            : $e->getMessage(),
-    ]);
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => $isProduction ? null : explode("\n", $e->getTraceAsString()),
+    ], JSON_PRETTY_PRINT);
     exit;
 }
 
