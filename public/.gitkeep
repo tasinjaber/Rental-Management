@@ -1,0 +1,3 @@
+# This directory is required by Vercel
+# All requests are handled by the PHP serverless function at /api/index.php
+
