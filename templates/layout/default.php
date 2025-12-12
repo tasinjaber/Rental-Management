@@ -29,7 +29,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <?php if ($this->Identity->isLoggedIn()): ?>
+                    <?php if (isset($this->Identity) && $this->Identity->isLoggedIn()): ?>
                         <li class="nav-item">
                             <?= $this->Html->link('Dashboard', ['controller' => 'Dashboard', 'action' => 'index'], ['class' => 'nav-link']) ?>
                         </li>

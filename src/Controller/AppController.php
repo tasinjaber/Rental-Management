@@ -18,6 +18,9 @@ class AppController extends Controller
         ]);
         $this->loadComponent('Authorization.Authorization');
 
+        // Load Identity helper for views
+        $this->viewBuilder()->setHelpers(['Authentication.Identity']);
+
         if ($this->request->getParam('prefix') === 'Api') {
             $this->viewBuilder()->setClassName('Json');
         }
