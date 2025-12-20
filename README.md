@@ -1,18 +1,12 @@
-#Rental Management System
+# Rental Management System
+A complete Rental Management System built with CakePHP 4.x, MySQL, and Firebase integration for SMS and Email notifications.
 
 ## Project Overview
-This repository contains the complete implementation of a Web-Based Rental
-Management System developed as part of an academic project. The system is
-designed to support end-to-end rental operations, including property and unit
-management, tenant administration, contract handling, payment processing, and
-automated reminders.
+This repository presents a complete Web-Based Rental Management System developed as part of an academic project. The system is built to handle the full rental lifecycle, starting from property and unit management to tenant handling, rental contracts, payment tracking, and automated reminders.
 
-The primary objective of the project is to demonstrate the application of modern
-web development practices, software architecture principles, and design patterns
-in a real-world web-based information system.
+The main goal of this project is to showcase how modern web development technologies, clean software architecture, and well-known design patterns can be applied to solve real-world problems through a web-based information system.
 
-The application is implemented using CakePHP 4.x, MySQL, and Firebase services
-for notification handling.
+The application is developed using CakePHP 4.x as the backend framework, MySQL for database management, and Firebase services to support notification features such as SMS and email alerts.
 
 ---
 
@@ -31,14 +25,9 @@ for notification handling.
 ---
 
 ## System Architecture
-The system follows the **Model–View–Controller (MVC)** architectural pattern
-using CakePHP. Controllers manage HTTP requests and workflow coordination,
-models handle business logic and database access through the ORM, and views
-are responsible for presentation.
+The system is designed following the Model–View–Controller (MVC) architectural pattern provided by CakePHP. Controllers are responsible for handling user requests and coordinating workflows, models manage business logic and database interactions through the ORM, and views focus on presenting data to users in a clear and responsive way.
 
-The **Factory Method design pattern** is applied through CakePHP’s Table Locator
-to manage dynamic creation of database table objects. This approach promotes
-loose coupling, scalability, and maintainability across service layers.
+To improve flexibility and maintainability, the Factory Method design pattern is utilized through CakePHP’s Table Locator. This allows dynamic creation and management of database table objects, helping to keep the system loosely coupled, scalable, and easier to extend in the future.
 
 ---
 
